@@ -9949,33 +9949,31 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
     var edge2 = [7, 15, 23, 31, 39, 47, 55];
     if (selected && turn === "red") {
-      if (edge1.indexOf(selected) !== -1) {
-        moves.push(selected - 7);
-      } else if (edge2.indexOf(selected) !== -1) {
-        moves.push(selected - 9);
-      } else if (squares[selected - 9] === "" && squares[selected - 7] === "") {
+      if (edge1.indexOf(selected) === -1 && squares[selected - 7] === "" && squares[selected - 9] === "" && edge2.indexOf(selected) === -1) {
         moves.push(selected - 9, selected - 7);
-      } else if (squares[selected - 9] === "") {
+      } else if (edge1.indexOf(selected) === -1 && squares[selected - 9] === "") {
         moves.push(selected - 9);
-      } else if (squares[selected - 7] === "") {
+      } else if (edge2.indexOf(selected) === -1 && squares[selected - 7] === "") {
         moves.push(selected - 7);
       }
     } else if (selected && turn == "black") {
-      if (edge1.indexOf(selected) !== -1) {
-        moves.push(selected + 9);
-      } else if (edge2.indexOf(selected) !== -1) {
-        moves.push(selected + 7);
-      } else if (squares[selected + 9] === "" && squares[selected + 7] === "") {
+      if (edge1.indexOf(selected) === -1 && squares[selected + 9] === "" && squares[selected + 7] === "" && edge2.indexOf(selected) === -1) {
         moves.push(selected + 9, selected + 7);
-      } else if (squares[selected + 9] === "") {
-        moves.push(selected + 9);
-      } else if (squares[selected + 7] === "") {
+      } else if (edge1.indexOf(selected) === -1 && squares[selected + 7] === "") {
         moves.push(selected + 7);
+      } else if (squares[selected + 9] === "" && edge2.indexOf(selected) === -1) {
+        moves.push(selected + 9);
       }
     }
+    this.checkJumps(moves, squares);
     return moves;
   }
 
+  checkJumps(moves, squares) {
+    if (squares[selected + 9] !== "") {
+      moves.push();
+    }
+  }
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
