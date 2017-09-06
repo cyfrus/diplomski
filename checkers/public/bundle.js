@@ -9934,7 +9934,8 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         squares: squares,
         turn: this.state.turn === "black" ? "red" : "black",
         selected: null,
-        moves: []
+        moves: [],
+        deleted: []
       });
     } else if (this.state.squares[i] == this.state.turn) {
       this.setState({
@@ -9965,13 +9966,26 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         moves.push(selected + 9);
       }
     }
-    this.checkJumps(moves, squares);
+    this.checkJumps(moves, squares, selected);
     return moves;
   }
 
-  checkJumps(moves, squares) {
-    if (squares[selected + 9] !== "") {
-      moves.push();
+  checkJumps(moves, squares, selected) {
+    var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
+    var edge2 = [7, 15, 23, 31, 39, 47, 55];
+
+    if (squares[selected - 9] === "black" && squares[selected - 18] === "" && squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
+      moves.push(selected - 18, selected - 14);
+    } else if (squares[selected - 9] === "black" && squares[selected - 18] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1) {
+      moves.push(selected - 18);
+    } else if (squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge2.indexOf(selected) === -1) {
+      moves.push(selected - 14);
+    } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
+      moves.push(selected + 18, selected + 14);
+    } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && this.state.turn === "black" && edge2.indexOf(selected) === -1) {
+      moves.push(selected + 18);
+    } else if (squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1) {
+      moves.push(selected + 14);
     }
   }
   render() {
