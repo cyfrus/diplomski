@@ -179,6 +179,22 @@ class Game extends React.Component {
     if (this.state.selected && this.state.moves.indexOf(i) !== -1) {
       squares[this.state.selected] = "";
       squares[i] = this.state.turn;
+      if(this.state.turn === "black" && squares[i - 9] === "red")
+      {
+        squares[i - 9] = "";
+      }
+      else if(this.state.turn === "red" && squares[i + 9] === "black")
+      {
+        squares[i + 9] = "";
+      }
+      else if(this.state.turn === "black" && squares[i - 7] === "red" )
+      {
+        squares[i - 7] = "";
+      }
+      else if(this.state.turn === "red" && squares[i + 7] === "black" )
+      {
+        squares[i + 7] = "";
+      }
       this.setState({
         squares: squares,
         turn: this.state.turn === "black" ? "red" : "black",
