@@ -9899,7 +9899,8 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       squares: Array(64).fill(""),
       selected: null,
       moves: [],
-      brown: Array(64).fill()
+      brown: Array(64).fill(),
+      deleted: []
     };
   }
   componentWillMount() {
@@ -9925,26 +9926,19 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     });
   }
   handleClick(i) {
-    console.log(i);
     const squares = this.state.squares.slice();
     if (this.state.selected && this.state.moves.indexOf(i) !== -1) {
       squares[this.state.selected] = "";
       squares[i] = this.state.turn;
-      if (this.state.turn === "black" && squares[i - 9] === "red") {
-        squares[i - 9] = "";
-      } else if (this.state.turn === "red" && squares[i + 9] === "black") {
-        squares[i + 9] = "";
-      } else if (this.state.turn === "black" && squares[i - 7] === "red") {
-        squares[i - 7] = "";
-      } else if (this.state.turn === "red" && squares[i + 7] === "black") {
-        squares[i + 7] = "";
-      }
+      this.state.deleted.forEach(function (element) {
+        squares[element] = "";
+      });
+
       this.setState({
         squares: squares,
         turn: this.state.turn === "black" ? "red" : "black",
         selected: null,
-        moves: [],
-        deleted: []
+        moves: []
       });
     } else if (this.state.squares[i] == this.state.turn) {
       this.setState({
@@ -9953,11 +9947,21 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       });
     }
   }
-
+  gameOver() {
+    var pieces = [];
+    var turn = this.state.turn;
+    this.state.squares.forEach(function (element, index) {
+      if (element === turn) {
+        pieces.push(index);
+      }
+    });
+    this.availableMoves(this.state.squares, turn, pieces);
+  }
   availableMoves(squares, turn, selected) {
     var moves = [];
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
     var edge2 = [7, 15, 23, 31, 39, 47, 55];
+    var deleted = [];
     if (selected && turn === "red") {
       if (edge1.indexOf(selected) === -1 && squares[selected - 7] === "" && squares[selected - 9] === "" && edge2.indexOf(selected) === -1) {
         moves.push(selected - 9, selected - 7);
@@ -9975,26 +9979,44 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         moves.push(selected + 9);
       }
     }
-    this.checkJumps(moves, squares, selected);
+    this.checkJumps(moves, squares, selected, deleted);
+    this.setState({
+      deleted: deleted
+    });
     return moves;
   }
 
-  checkJumps(moves, squares, selected) {
+  checkJumps(moves, squares, selected, deleted) {
+
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
     var edge2 = [7, 15, 23, 31, 39, 47, 55];
 
     if (squares[selected - 9] === "black" && squares[selected - 18] === "" && squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
       moves.push(selected - 18, selected - 14);
+      deleted.push(selected - 9);
+      this.checkJumps(moves, squares, selected - 18, deleted);
     } else if (squares[selected - 9] === "black" && squares[selected - 18] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1) {
       moves.push(selected - 18);
+      deleted.push(selected - 9);
+      this.checkJumps(moves, squares, selected - 18, deleted);
     } else if (squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge2.indexOf(selected) === -1) {
       moves.push(selected - 14);
+      deleted.push(selected - 7);
+      this.checkJumps(moves, squares, selected - 14, deleted);
     } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
       moves.push(selected + 18, selected + 14);
+      deleted.push(selected - 7);
+      this.checkJumps(moves, squares, selected - 14, deleted);
     } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && this.state.turn === "black" && edge2.indexOf(selected) === -1) {
       moves.push(selected + 18);
+      deleted.push(selected + 9);
+      this.checkJumps(moves, squares, selected + 18, deleted);
     } else if (squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1) {
       moves.push(selected + 14);
+      deleted.push(selected + 7);
+      this.checkJumps(moves, squares, selected + 14, deleted);
+    } else {
+      return;
     }
   }
   render() {
