@@ -51,7 +51,7 @@ class Board extends React.Component {
   }
   render() {
     return (
-      <div className="board">
+      <div className="col board">
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -138,6 +138,34 @@ class Board extends React.Component {
   }
 }
 
+class Counter extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {seconds: 10};
+  }
+  
+  componentDidMount() {
+    setInterval(() => {
+      if(this.state.seconds)
+      {
+        this.setState({ seconds: this.state.seconds - 1 })
+      }
+      else
+      {
+        this.setState({ seconds: 10})
+      }
+     }, 1000);
+   }
+
+   render(){
+      return(
+        <div className="col player">
+           Timer: {this.state.seconds}
+        </div>
+      )
+   }
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -154,6 +182,7 @@ class Game extends React.Component {
   componentWillMount() {
     const squares = this.state.squares.slice();
     const browns = this.state.brown.slice();
+    var seconds = 10;
     squares[1] = squares[3] = squares[5] = squares[7] = squares[8] = squares[10] = squares[12] = squares[14] = squares[17] = squares[19] = squares[21] = squares[23] = "black";
     squares[40] = squares[42] = squares[44] = squares[46] = squares[49] = squares[51] = squares[53] = squares[55] = squares[56] = squares[58] = squares[60] = squares[62] = "red";
     var isbrown = false;
@@ -171,11 +200,18 @@ class Game extends React.Component {
 
     this.setState({
       squares: squares,
-      brown: browns
+      brown: browns,
     })
+  }
+  increment(seconds)
+  {
+      seconds -= 1;
+      return seconds;
   }
   handleClick(i) {
     const squares = this.state.squares.slice();
+    const selected = [];
+    selected.push(i);
     if (this.state.selected && this.state.moves.indexOf(i) !== -1) {
       squares[this.state.selected] = "";
       squares[i] = this.state.turn;
@@ -193,7 +229,7 @@ class Game extends React.Component {
     else if (this.state.squares[i] == this.state.turn) {
       this.setState({
         selected: i,
-        moves : this.availableMoves(squares, this.state.turn, i)
+        moves : this.availableMoves(squares, this.state.turn, selected)
       });
       
     }
@@ -217,35 +253,41 @@ class Game extends React.Component {
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
     var edge2 = [7, 15, 23, 31, 39, 47, 55];
     var deleted = [];
-    if (selected && turn === "red") {
-      if(edge1.indexOf(selected) === -1 && squares[selected - 7] === "" && squares[selected - 9] === "" && edge2.indexOf(selected) === -1)
-        {
-          moves.push(selected - 9, selected - 7);
-        }
-      else if(edge1.indexOf(selected) === -1 && squares[selected - 9] === "")
-        {
-          moves.push(selected - 9);
-        }
-      else if(edge2.indexOf(selected) === -1 && squares[selected - 7] === "")
-        {
-          moves.push(selected - 7);
-        }
-    }
-    else if (selected && turn == "black") {
-      if(edge1.indexOf(selected) === -1  && squares[selected + 9] === "" && squares[selected + 7] === "" && edge2.indexOf(selected) === -1)
-        {
-          moves.push(selected + 9, selected + 7);
-        }
-      else if(edge1.indexOf(selected) === -1  && squares[selected + 7] === "")
-        {
-          moves.push(selected + 7);
-        }
-      else if(squares[selected + 9] === "" && edge2.indexOf(selected) === -1)
-        {
-          moves.push(selected + 9);
-        }
-    }
-    this.checkJumps(moves, squares, selected, deleted);
+    var object = this;
+    selected.forEach(function(checker)
+    {
+      if (checker && turn === "red") {
+        if(edge1.indexOf(checker) === -1 && squares[checker - 7] === "" && squares[checker - 9] === "" && edge2.indexOf(checker) === -1)
+          {
+            moves.push(checker - 9, checker - 7);
+          }
+        else if(edge1.indexOf(checker) === -1 && squares[checker - 9] === "")
+          {
+            moves.push(checker - 9);
+          }
+        else if(edge2.indexOf(checker) === -1 && squares[checker - 7] === "")
+          {
+            moves.push(checker - 7);
+          }
+      }
+      else if (checker && turn == "black") {
+        if(edge1.indexOf(checker) === -1  && squares[checker + 9] === "" && squares[checker + 7] === "" && edge2.indexOf(checker) === -1)
+          {
+            moves.push(checker + 9, checker + 7);
+          }
+        else if(edge1.indexOf(checker) === -1  && squares[checker + 7] === "")
+          {
+            moves.push(checker + 7);
+          }
+        else if(squares[checker + 9] === "" && edge2.indexOf(checker) === -1)
+          {
+            moves.push(checker + 9);
+          }
+      }
+      object.checkJumps(moves, squares, checker, deleted);
+    })
+    
+    
     this.setState({
       deleted : deleted
     })
@@ -303,8 +345,9 @@ class Game extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h2>{"Player " + this.state.turn}</h2>
+      <div className="col-md-auto">
+        <div className="player col">{"Player: " + this.state.turn}</div>
+        <Counter />
         <Board brown={this.state.brown} moves={this.state.moves} squares={this.state.squares} selected={this.state.selected} onClick={i => this.handleClick(i)} />
       </div>
     );

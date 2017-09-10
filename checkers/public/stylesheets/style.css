@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #FDF0D5;
 }
 
 a {
@@ -16,10 +17,10 @@ button:focus
 {
   width: 50px;
   height: 50px;
-  background-color:white;
+  background-color: #FDF0D5;
   border-style: solid;
   border-width: 1px;
-  border-color: #BABABA;
+  border-color: transparent;
   margin:2px;
 }
 .playerred
@@ -29,7 +30,7 @@ button:focus
   border:1px solid transparent;
   height: 60%;
   width: 80%;
-  background-color: #DC3F3F;
+  background-color: #D81E5B;
   border-radius:100%;
 }
 .playerblack
@@ -39,14 +40,14 @@ button:focus
   border:1px solid transparent;
   height: 60%;
   width: 80%;
-  background-color:black;
+  background-color: #3A3335;
   border-radius:100%;
 }
 
 .selected
 {
-   border: 1px solid rgba(48, 48, 212, 0.75); 
-   box-shadow: 0px 0px 10px rgba(48, 48, 212, 0.75); 
+   border: 2px solid #3A3335;
+   box-shadow: 0px 0px 10px #3A3335;
 }
 
 .brown
@@ -56,6 +57,21 @@ button:focus
 
 .available
 {
-  border: 2px solid rgba(48, 48, 212, 0.75); 
-  box-shadow: 0px 0px 10px rgba(48, 48, 212, 0.75); 
+  border: 2px solid  #3A3335;
+  box-shadow: 0px 0px 10px #3A3335;
+}
+
+#root
+{
+  margin-top: 25px;
+}
+
+body
+{ 
+  background-color: #BD413F;
+}
+.player
+{
+  font-size: 2em;
+  font-family: 'Teko', sans-serif;  
 }
