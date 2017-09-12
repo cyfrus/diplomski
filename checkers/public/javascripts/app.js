@@ -273,6 +273,7 @@ class Game extends React.Component {
       return seconds;
   }
   handleClick(i) {
+    socket.emit('move', this.state.squares); 
     const squares = this.state.squares.slice();
     const selected = [];
     selected.push(i);
@@ -358,7 +359,13 @@ class Game extends React.Component {
     return moves;    
   }
 
- 
+  componentDidMount()
+  {
+    socket.on('move', data => {
+      var squares = this.state.squares;
+      this.setState({ squares: squares})
+    }) 
+  }
   checkJumps(moves, squares, selected, deleted)
   {
 

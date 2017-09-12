@@ -10032,6 +10032,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return seconds;
   }
   handleClick(i) {
+    socket.emit('move', this.state.squares);
     const squares = this.state.squares.slice();
     const selected = [];
     selected.push(i);
@@ -10098,6 +10099,12 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return moves;
   }
 
+  componentDidMount() {
+    socket.on('move', data => {
+      var squares = this.state.squares;
+      this.setState({ squares: squares });
+    });
+  }
   checkJumps(moves, squares, selected, deleted) {
 
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];

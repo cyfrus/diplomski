@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+     <script src="/socket.io/socket.io.js"></script> 
+    <link href="https://fonts.googleapis.com/css?family=Teko:700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    <script>
+  // var socket = io.connect('http://localhost');
+  // socket.on('news', function (data) {
+  //   console.log(data);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
+
+    </script>
+  </head>
+  <body>
+    <div class="container">
+        <div class="row  justify-content-md-center">
+            <div class="col-md-5 welcomediv d-flex align-items-start flex-column justify-content-center">
+              <div>
+                  <form action="/register" method="POST">
+                    <div class="form-group">
+                        <label for="" class="float-left">Username</label>
+                        <input type="text" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="float-left">Name</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="float-left">Surname</label>
+                        <input type="text" name="surname" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="float-left">age</label>
+                        <input type="number" name="age" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="float-left">Password</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-default float-left">Register</button>
+                    </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+    </div>
+    
+<%- include('templates/footer') -%>
+</footer>
+</body>

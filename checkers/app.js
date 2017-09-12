@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require("express-session");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -21,12 +21,19 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
+  socket.on('move', function(squares){
+    io.emit('move', squares);
+  });
 });
 app.use(function(req, res, next){
   res.io = io;
   next();
 });
-
+app.use(session({
+  resave: false, // don't save session if unmodified
+  saveUninitialized: true, // don't create session until something stored
+  secret: 'secret'
+}));
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));

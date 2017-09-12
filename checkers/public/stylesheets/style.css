@@ -107,7 +107,7 @@ body
 }
 .welcomediv
 {
-  border: 1px solid black;
+  
   padding: 20px;
   font-family: 'Teko', sans-serif;
   
@@ -116,7 +116,7 @@ body
 {
   text-align: center;
   width:100%;
-  border: 1px solid black;
+
   padding: 20px;
 }
 .welcomediv div a
@@ -139,7 +139,6 @@ body
 .searchingrow
 {
   height: 500px;
-  border: 1px solid black;
 }
 .sk-wandering-cubes {
   margin: 40px auto;
@@ -198,3 +197,8 @@ body
   100% {
     -webkit-transform: rotate(-360deg);
             transform: rotate(-360deg); } }
+
+.login-username-label, .login-password-label
+{
+  float:left;
+}
