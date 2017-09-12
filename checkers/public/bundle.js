@@ -9746,6 +9746,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var socket = io('//localhost:3000');
+
 function Square(props) {
   function getClassName() {
     var className = "square ";
@@ -9910,9 +9912,82 @@ class Counter extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'col player' },
+      null,
       'Timer: ',
       this.state.seconds
+    );
+  }
+}
+class ChatList extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  render() {
+    const texts = this.props.texts;
+    const textList = texts.map((text, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { key: index },
+      text
+    ));
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'chatlist-div' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'chatlist float-left' },
+        textList
+      )
+    );
+  }
+}
+class Chat extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: [],
+      current: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    socket.on('chat message', data => {
+      var texts = this.state.text;
+      texts.push(data);
+      this.setState({ text: texts });
+    });
+  }
+
+  handleChange(event) {
+    this.setState({
+      current: event.target.value
+    });
+  }
+  handleClick(event) {
+    socket.emit('chat message', this.state.current);
+    this.setState({
+      current: ""
+    });
+  }
+  render() {
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ChatList, { texts: this.state.text }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'form-group' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'label',
+          null,
+          'Message:'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', value: this.state.current, onChange: this.handleChange, className: 'form-control' }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { type: 'button', className: 'btn btn-dark sendtextbtn', onClick: this.handleClick },
+          'Send'
+        )
+      )
     );
   }
 }
@@ -10030,7 +10105,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     if (squares[selected - 9] === "black" && squares[selected - 18] === "" && squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
       moves.push(selected - 18, selected - 14);
-      deleted.push(selected - 9);
+      deleted.push(selected - 18);
       this.checkJumps(moves, squares, selected - 18, deleted);
     } else if (squares[selected - 9] === "black" && squares[selected - 18] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1) {
       moves.push(selected - 18);
@@ -10042,7 +10117,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       this.checkJumps(moves, squares, selected - 14, deleted);
     } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1) {
       moves.push(selected + 18, selected + 14);
-      deleted.push(selected - 7);
+      deleted.push(selected + 14);
       this.checkJumps(moves, squares, selected - 14, deleted);
     } else if (squares[selected + 9] === "red" && squares[selected + 18] === "" && this.state.turn === "black" && edge2.indexOf(selected) === -1) {
       moves.push(selected + 18);
@@ -10059,14 +10134,23 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'col-md-auto' },
+      { className: 'row' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'player col' },
-        "Player: " + this.state.turn
+        "Player: " + this.state.turn,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Counter, null)
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Counter, null),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Board, { brown: this.state.brown, moves: this.state.moves, squares: this.state.squares, selected: this.state.selected, onClick: i => this.handleClick(i) })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-md-auto' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Board, { brown: this.state.brown, moves: this.state.moves, squares: this.state.squares, selected: this.state.selected, onClick: i => this.handleClick(i) })
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Chat, null)
+      )
     );
   }
 }

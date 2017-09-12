@@ -1,0 +1,29 @@
+<%- include('templates/header') -%>
+
+
+<script>
+        var socket = io('//localhost:3000');
+        socket.on('news', function (data) {
+          console.log(data);
+          socket.emit('my other event', { my: data });
+          
+        });
+      </script>
+      
+<div class="container">
+    <div class="row justify-content-md-center align-items-center searchingrow">
+        <div class="col col-md-auto">
+            <h1>Searching for game</h1>
+                <div class="sk-wandering-cubes">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<%- include('templates/footer') -%>
+
+</footer>
+</body>

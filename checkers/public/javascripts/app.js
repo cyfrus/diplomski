@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+var socket = io('//localhost:3000');
+
 function Square(props) {
   function getClassName() {
     var className = "square ";
@@ -159,11 +161,73 @@ class Counter extends React.Component{
 
    render(){
       return(
-        <div className="col player">
+        <div>
            Timer: {this.state.seconds}
         </div>
       )
    }
+}
+class ChatList extends React.Component{
+   render()
+   {  
+      const texts = this.props.texts;
+      const textList = texts.map((text, index) =>
+       <div key={index}>{text}</div>
+    );
+     return(
+      <div className="chatlist-div">
+      <div className="chatlist float-left">{textList}</div>
+      </div>
+     );
+   }
+}
+class Chat extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+       text: [],
+       current: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {    
+    socket.on('chat message', data => {
+      var texts = this.state.text;
+      texts.push(data);
+      this.setState({ text: texts})
+    }) 
+  }
+
+  handleChange(event)
+  {
+      this.setState({
+        current: event.target.value
+      })
+  }
+  handleClick(event) {
+    socket.emit('chat message', this.state.current);
+    this.setState({
+      current: ""
+    }) 
+  }
+    render()
+    {
+      
+      return(
+        <div>
+        <ChatList texts={this.state.text} />
+        <div className="form-group">
+        <label>
+          Message:
+          </label>
+          <input type="text" value={this.state.current} onChange={this.handleChange} className="form-control" />
+          <button type="button" className="btn btn-dark sendtextbtn" onClick={this.handleClick}>Send</button>
+        </div>
+        </div>
+      );
+    }
 }
 
 class Game extends React.Component {
@@ -304,7 +368,7 @@ class Game extends React.Component {
       if(squares[selected - 9] === "black" && squares[selected - 18] === "" && squares[selected - 7] === "black" && squares[selected - 14] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1)
         {
            moves.push(selected - 18, selected - 14);
-           deleted.push(selected - 9);
+           deleted.push(selected - 18);
            this.checkJumps(moves, squares, selected - 18, deleted);
         }
       else if(squares[selected - 9] === "black" && squares[selected - 18] === "" && this.state.turn === "red" && edge1.indexOf(selected) === -1)
@@ -322,7 +386,7 @@ class Game extends React.Component {
       else if(squares[selected + 9] === "red" && squares[selected + 18] === "" && squares[selected + 7] === "red" && squares[selected + 14] === "" && this.state.turn === "black" && edge1.indexOf(selected) === -1 && edge2.indexOf(selected) === -1)
       {
           moves.push(selected + 18, selected + 14);
-          deleted.push(selected - 7);
+          deleted.push(selected + 14);
           this.checkJumps(moves, squares, selected - 14, deleted);
       }
       else if(squares[selected + 9] === "red" && squares[selected + 18] === ""  && this.state.turn === "black" && edge2.indexOf(selected) === -1)
@@ -345,10 +409,18 @@ class Game extends React.Component {
   }
   render() {
     return (
-      <div className="col-md-auto">
-        <div className="player col">{"Player: " + this.state.turn}</div>
-        <Counter />
+      <div className="row">
+        <div className="player col">
+          {"Player: " + this.state.turn}
+          <Counter />
+        </div>
+        
+        <div className="col-md-auto">
         <Board brown={this.state.brown} moves={this.state.moves} squares={this.state.squares} selected={this.state.selected} onClick={i => this.handleClick(i)} />
+        </div>
+        <div className="col">
+        <Chat />
+        </div> 
       </div>
     );
   }

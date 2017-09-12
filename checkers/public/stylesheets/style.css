@@ -1,9 +1,13 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #FDF0D5;
+  padding-top: 65px;
+  font-family: 'Teko', sans-serif;  
 }
-
+*
+{
+  /* border: 1px solid black; */
+}
 a {
   color: #00B7FF;
 }
@@ -12,7 +16,11 @@ button:focus
 {
   outline: 0;
 }
-
+.board
+{
+  min-width: 500px;
+  margin-bottom: 20px;
+}
 .square
 {
   width: 50px;
@@ -30,7 +38,7 @@ button:focus
   border:1px solid transparent;
   height: 60%;
   width: 80%;
-  background-color: #D81E5B;
+  background-color: #A31846;
   border-radius:100%;
 }
 .playerblack
@@ -63,7 +71,7 @@ button:focus
 
 #root
 {
-  margin-top: 25px;
+  margin-top: 100px;
 }
 
 body
@@ -75,3 +83,118 @@ body
   font-size: 2em;
   font-family: 'Teko', sans-serif;  
 }
+
+.chatlist
+{
+  list-style: none;
+}
+
+.chatlist-div
+{
+  position: relative;
+  border-radius: 2px;
+  padding: 5px;
+  border:1px solid white;
+  height: 300px;
+  margin-bottom: 15px;
+  overflow-y: scroll;
+  word-break: break-all;
+}
+
+.sendtextbtn
+{
+  margin-top:5px;
+}
+.welcomediv
+{
+  border: 1px solid black;
+  padding: 20px;
+  font-family: 'Teko', sans-serif;
+  
+}
+.welcomediv div
+{
+  text-align: center;
+  width:100%;
+  border: 1px solid black;
+  padding: 20px;
+}
+.welcomediv div a
+{
+  display: inline-block;
+  color: #FDF0D5;
+  font-size: 3em;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.welcomediv div a:hover
+{
+  transform: scale(1.1);
+}
+
+.searchingrow
+{
+  height: 500px;
+  border: 1px solid black;
+}
+.sk-wandering-cubes {
+  margin: 40px auto;
+  width: 40px;
+  height: 40px;
+  position: relative; }
+  .sk-wandering-cubes .sk-cube {
+    background-color: #FDF0D5;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-wanderingCube 1.8s ease-in-out -1.8s infinite both;
+            animation: sk-wanderingCube 1.8s ease-in-out -1.8s infinite both; }
+  .sk-wandering-cubes .sk-cube2 {
+    -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s; }
+@-webkit-keyframes sk-wanderingCube {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  25% {
+    -webkit-transform: translateX(30px) rotate(-90deg) scale(0.5);
+            transform: translateX(30px) rotate(-90deg) scale(0.5); }
+  50% {
+    /* Hack to make FF rotate in the right direction */
+    -webkit-transform: translateX(30px) translateY(30px) rotate(-179deg);
+            transform: translateX(30px) translateY(30px) rotate(-179deg); }
+  50.1% {
+    -webkit-transform: translateX(30px) translateY(30px) rotate(-180deg);
+            transform: translateX(30px) translateY(30px) rotate(-180deg); }
+  75% {
+    -webkit-transform: translateX(0) translateY(30px) rotate(-270deg) scale(0.5);
+            transform: translateX(0) translateY(30px) rotate(-270deg) scale(0.5); }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg); } }
+@keyframes sk-wanderingCube {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  25% {
+    -webkit-transform: translateX(30px) rotate(-90deg) scale(0.5);
+            transform: translateX(30px) rotate(-90deg) scale(0.5); }
+  50% {
+    /* Hack to make FF rotate in the right direction */
+    -webkit-transform: translateX(30px) translateY(30px) rotate(-179deg);
+            transform: translateX(30px) translateY(30px) rotate(-179deg); }
+  50.1% {
+    -webkit-transform: translateX(30px) translateY(30px) rotate(-180deg);
+            transform: translateX(30px) translateY(30px) rotate(-180deg); }
+  75% {
+    -webkit-transform: translateX(0) translateY(30px) rotate(-270deg) scale(0.5);
+            transform: translateX(0) translateY(30px) rotate(-270deg) scale(0.5); }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg); } }
