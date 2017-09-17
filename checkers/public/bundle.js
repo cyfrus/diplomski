@@ -10032,7 +10032,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return seconds;
   }
   handleClick(i) {
-    socket.emit('move', this.state.squares);
+
     const squares = this.state.squares.slice();
     const selected = [];
     selected.push(i);
@@ -10049,6 +10049,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         selected: null,
         moves: []
       });
+      socket.emit('move', squares);
     } else if (this.state.squares[i] == this.state.turn) {
       this.setState({
         selected: i,
@@ -10100,9 +10101,21 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   componentDidMount() {
+    console.log("pokusavam updejtat dom");
     socket.on('move', data => {
+      console.log(data);
+      var cnt = 0;
+      var equal = true;
       var squares = this.state.squares;
-      this.setState({ squares: squares });
+      data.forEach(function (element) {
+        if (squares[cnt] !== element) {
+          equal = false;
+        }
+        cnt++;
+      });
+      if (equal) {
+        this.setState({ squares: data });
+      };
     });
   }
   checkJumps(moves, squares, selected, deleted) {

@@ -273,7 +273,7 @@ class Game extends React.Component {
       return seconds;
   }
   handleClick(i) {
-    socket.emit('move', this.state.squares); 
+    
     const squares = this.state.squares.slice();
     const selected = [];
     selected.push(i);
@@ -289,7 +289,8 @@ class Game extends React.Component {
         turn: this.state.turn === "black" ? "red" : "black",
         selected: null,
         moves: []
-      })
+      }, )
+      socket.emit('move', squares);
     }
     else if (this.state.squares[i] == this.state.turn) {
       this.setState({
@@ -298,7 +299,7 @@ class Game extends React.Component {
       });
       
     }
-
+    
   }
   gameOver()
   {
@@ -361,10 +362,24 @@ class Game extends React.Component {
 
   componentDidMount()
   {
-    socket.on('move', data => {
-      var squares = this.state.squares;
-      this.setState({ squares: squares})
-    }) 
+    console.log("pokusavam updejtat dom");
+     socket.on('move', data => {
+       console.log(data);
+       var cnt = 0;
+       var equal = true;
+       var squares = this.state.squares;
+         data.forEach(function(element){
+            if(squares[cnt] !== element)
+           {
+             equal = false;
+           }
+            cnt++;
+         })
+         if(equal)
+         {
+          this.setState({ squares: data});
+         };
+     }) 
   }
   checkJumps(moves, squares, selected, deleted)
   {

@@ -21,8 +21,9 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
-  socket.on('move', function(squares){
-    io.emit('move', squares);
+  socket.on('move', function (data) {
+    console.log("potez se dogodio (server)! " + data);
+    io.emit('move', data);
   });
 });
 app.use(function(req, res, next){

@@ -64,5 +64,8 @@ router.post('/register', function (req, res, next) {
   res.redirect('/login');
 });
 
+router.get('/profile', function(req, res, next){
+  res.render('profile', req.session.user);
+});
 
 module.exports = router;
