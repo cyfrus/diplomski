@@ -16,16 +16,17 @@ var io = require('socket.io')(server);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-io.on('connection', function(socket){
-  console.log("connection");
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-  socket.on('move', function (data) {
-    console.log("potez se dogodio (server)! " + data);
-    io.emit('move', data);
-  });
-});
+
+// io.on('connection', function(socket){
+//   console.log("connection");
+//   socket.on('chat message', function(msg){
+//     io.emit('chat message', msg);
+//   });
+//   socket.on('move', function (data) {
+//     console.log("potez se dogodio (server)! " + data);
+//     io.emit('move', data);
+//   });
+// });
 app.use(function(req, res, next){
   res.io = io;
   next();

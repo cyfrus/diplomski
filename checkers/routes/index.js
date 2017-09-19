@@ -3,21 +3,63 @@ var router = express.Router();
 var db = require('../database/connection');
 var bcrypt = require('bcrypt');
 
+var players = [];
+var cnt = 0;
 /* GET home page. */
+
 router.get('/', function(req, res, next) {
+  if (req.session.user) {
+    
+ res.io.on('connection', function(socket){
+    cnt++;
+    if(cnt === 1)
+    {
+      req.session.turn = "red";
+    }
+    else
+    {
+      req.session.turn = "black";
+    }
+    // players.push({user : req.session.user, turn: AssignColor()});
+    // console.log(players);
+    console.log("Connection, req session turn je " + req.session.turn);
+    socket.on('checkTurn', function(data, callback){
+      console.log('Socket (server-side): received message:', data);
+      //console.log('connection data:', evData);
+      if(req.session.turn === data)
+      {
+        callback(true);
+      }
+      else
+      {
+        callback(false);
+      } 
+  });
+    socket.on('chat message', function(msg){
+      res.io.emit('chat message', msg);
+    });
+
+    socket.on('move', function (data) {
+      res.io.emit('move', data);
+    });
+  });
   res.render('index', { title: 'Express' });
+}
+res.redirect('/login');
 });
+
+
+
+
 
 router.get('/welcome', function(req, res, next) {
   res.render('welcome', { title: 'Express' });
 });
 
-var players = [];
+
 router.get('/search', function(req, res, next) {
   res.io.on('connection', function (socket) {
     players.push(req.session.user);
-    // console.log(req.session.user);
-    console.log(players);
     socket.on('my other event', function (data) {
     });
   
@@ -42,7 +84,7 @@ router.get('/logout', function (req, res, next) {
 router.post('/authenticate', function (req, res, next) {
 
   db.authenticate(req.body.username, req.body.password, function (authenticated, user, error) {
-    console.log(req.body.username +  " " + req.body.password);
+     
 
     if (authenticated === true) {
       req.session.user = user;
