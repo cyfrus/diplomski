@@ -1,6 +1,5 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: #FDF0D5;
   padding-top: 65px;
   font-family: 'Teko', sans-serif;  
 }
@@ -201,4 +200,13 @@ body
 .login-username-label, .login-password-label
 {
   float:left;
+}
+.register_link
+{
+   font-size: 1em;
+}
+
+.select_dropdown
+{
+  margin-bottom: 10px;
 }

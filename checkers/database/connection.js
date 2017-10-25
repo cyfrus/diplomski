@@ -36,5 +36,28 @@ module.exports = {
                 result(res,results[0],null);
             });
         });
+    },
+
+    search: function(player_id, mmr, seconds)
+    {
+        connection.query('INSERT INTO search SET ?', {player_id: player_id, mmr: mmr, seconds: seconds}, function(error, results, fields){
+            if (error) throw error;
+        });
+    },
+
+    stop: function(id)
+    {
+        connection.query('DELETE FROM search WHERE player_id =' + id, function (error, results, fields){
+        });
+    },
+
+    getSearch: function(callback)
+    {
+       
+        connection.query('SELECT * from search INNER JOIN users ON search.player_id = users.id', function(error, results, fields){
+            return callback(results);
+        });
+        
     }
+
 }

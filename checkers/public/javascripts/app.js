@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom';
 
 var socket = io('//localhost:3000');
 
-function Square(props) {
-  function getClassName() {
+function Square(props) 
+{
+  function getClassName() 
+  {
     var className = "square ";
     props.selected ? className = className + "selected " : className = className + "";
     props.available ? className = className + "available" : className = className + "";
     props.brown ? className = className + " brown" : "";
     return className;
   }
-  if (props.value) {
+  if (props.value) 
+  {
     return (
 
       <button className={getClassName()} onClick={props.onClick}>
@@ -21,7 +24,8 @@ function Square(props) {
       </button>
     );
   }
-  else {
+  else 
+  {
     return (
       <button className={getClassName()} onClick={props.onClick}>
       </button>
@@ -31,9 +35,11 @@ function Square(props) {
 
 }
 
-class Board extends React.Component {
+class Board extends React.Component 
+{
  
-  checkAvailable(i) {
+  checkAvailable(i) 
+  {
     var isAvailable = false;
     this.props.moves.forEach(function (element) {
       if (element === i) {
@@ -43,6 +49,7 @@ class Board extends React.Component {
     });
     return isAvailable;
   }
+
   renderSquare(i) {
     return (
       <Square brown={this.props.brown[i]} available={this.props.moves.length !== 0 ? this.checkAvailable(i) : false} selected={this.props.selected === i ? true : false}
@@ -51,102 +58,45 @@ class Board extends React.Component {
       />
     );
   }
-  render() {
+
+  getBoard()
+  {
+    var rows = [];
+    var squares = [];
+    var cnt = 0;
+    for(var i = 0; i < 8; i++)
+    {
+      for(var j = 0; j < 8; j++)
+      {
+        squares.push(<Square brown={this.props.brown[cnt]} key={j} available={this.props.moves.length !== 0 ? this.checkAvailable(cnt) : false} selected={this.props.selected === cnt ? true : false} value={this.props.squares[cnt]} onClick={() => this.props.onClick(cnt)} />)
+        cnt++;
+      }
+      rows.push(<div className="board-row" key={cnt}>{ squares }</div>);
+      squares = [];
+    }
+    return rows;
+  }
+  render() 
+  {
+    var rows = this.getBoard();
     return (
       <div className="col board">
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(8)}
-          {this.renderSquare(9)}
-          {this.renderSquare(10)}
-          {this.renderSquare(11)}
-          {this.renderSquare(12)}
-          {this.renderSquare(13)}
-          {this.renderSquare(14)}
-          {this.renderSquare(15)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(16)}
-          {this.renderSquare(17)}
-          {this.renderSquare(18)}
-          {this.renderSquare(19)}
-          {this.renderSquare(20)}
-          {this.renderSquare(21)}
-          {this.renderSquare(22)}
-          {this.renderSquare(23)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(24)}
-          {this.renderSquare(25)}
-          {this.renderSquare(26)}
-          {this.renderSquare(27)}
-          {this.renderSquare(28)}
-          {this.renderSquare(29)}
-          {this.renderSquare(30)}
-          {this.renderSquare(31)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(32)}
-          {this.renderSquare(33)}
-          {this.renderSquare(34)}
-          {this.renderSquare(35)}
-          {this.renderSquare(36)}
-          {this.renderSquare(37)}
-          {this.renderSquare(38)}
-          {this.renderSquare(39)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(40)}
-          {this.renderSquare(41)}
-          {this.renderSquare(42)}
-          {this.renderSquare(43)}
-          {this.renderSquare(44)}
-          {this.renderSquare(45)}
-          {this.renderSquare(46)}
-          {this.renderSquare(47)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(48)}
-          {this.renderSquare(49)}
-          {this.renderSquare(50)}
-          {this.renderSquare(51)}
-          {this.renderSquare(52)}
-          {this.renderSquare(53)}
-          {this.renderSquare(54)}
-          {this.renderSquare(55)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(56)}
-          {this.renderSquare(57)}
-          {this.renderSquare(58)}
-          {this.renderSquare(59)}
-          {this.renderSquare(60)}
-          {this.renderSquare(61)}
-          {this.renderSquare(62)}
-          {this.renderSquare(63)}
-        </div>
-
+        {rows}
       </div>
     );
   }
 }
 
-class Counter extends React.Component{
-  constructor(props) {
+class Counter extends React.Component
+{
+  constructor(props) 
+  {
     super(props);
     this.state = {seconds: 10};
   }
   
-  componentDidMount() {
+  componentDidMount() 
+  {
     setInterval(() => {
       if(this.state.seconds)
       {
@@ -159,78 +109,79 @@ class Counter extends React.Component{
      }, 1000);
    }
 
-   render(){
+   render()
+   {
       return(
         <div>
            Timer: {this.state.seconds}
         </div>
-      )
+      );
    }
 }
-class ChatList extends React.Component{
+class ChatList extends React.Component
+{
    render()
    {  
       const texts = this.props.texts;
       const textList = texts.map((text, index) =>
        <div key={index}>{text}</div>
     );
-     return(
+     return
+     (
       <div className="chatlist-div">
       <div className="chatlist float-left">{textList}</div>
       </div>
      );
    }
 }
-class Chat extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-       text: [],
-       current: ""
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+// class Chat extends React.Component
+// {
+//   constructor(props) 
+//   {
+//     super(props);
+//     this.state = {
+//        text: [],
+//        current: ""
+//     };
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleClick = this.handleClick.bind(this);
+//   }
 
-  componentDidMount() {    
-    socket.on('chat message', data => {
-      var texts = this.state.text;
-      texts.push(data);
-      this.setState({ text: texts})
-    }) 
-  }
+//   componentDidMount() 
+//   {    
+//     socket.on('chat message', data => {
+//       var texts = this.state.text;
+//       texts.push(data);
+//       this.setState({ text: texts})
+//     }) 
+//   }
 
-  handleChange(event)
-  {
-      this.setState({
-        current: event.target.value
-      })
-  }
-  handleClick(event) {
-    socket.emit('chat message', this.state.current);
-    this.setState({
-      current: ""
-    }) 
-  }
-    render()
-    {
+//   handleChange(event)
+//   {
+//       this.setState({
+//         current: event.target.value
+//       })
+//   }
+//   handleClick(event) 
+//   {
+//     socket.emit('chat message', this.state.current);
+//     this.setState({
+//       current: ""
+//     }) 
+//   }
+//     render()
+//     {
       
-      return(
-        <div>
-        <ChatList texts={this.state.text} />
-        <div className="form-group">
-        <label>
-          Message:
-          </label>
-          <input type="text" value={this.state.current} onChange={this.handleChange} className="form-control" />
-          <button type="button" className="btn btn-dark sendtextbtn" onClick={this.handleClick}>Send</button>
-        </div>
-        </div>
-      );
-    }
-}
+//       return
+//       (
+//         <div>
+//         </div>
+//       );
+//     }
+// }
 
-class Game extends React.Component {
+class Game extends React.Component 
+{
   constructor(props) {
     super(props);
     this.state = {
@@ -241,7 +192,8 @@ class Game extends React.Component {
       selected: null,
       moves: [],
       brown: Array(64).fill(),
-      deleted: []
+      deleted: [],
+      validMove: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -259,7 +211,8 @@ class Game extends React.Component {
               
   }
 
-  componentWillMount() {
+  componentWillMount() 
+  {
     const squares = this.state.squares.slice();
     const browns = this.state.brown.slice();
     var seconds = 10;
@@ -288,17 +241,25 @@ class Game extends React.Component {
       seconds -= 1;
       return seconds;
   }
-  whoSent()
+  checkTurn(i)
   {
-    socket.emit('checkTurn', this.state.turn , function(responseData){
+    var t = this;
+    socket.emit('checkTurn', {turn: this.state.turn, selected: this.state.squares[i]}, function(responseData){
       console.log('Callback called with data:', responseData);
+      t.setState({
+        validMove : responseData
+      })
   });
   }
-  handleClick(i) {
+
+  handleClick(i) 
+  {
     const squares = this.state.squares.slice();
     const selected = [];
+    this.checkTurn(i);
+    console.log("Valid move " + this.state.validMove);
     selected.push(i);
-     this.whoSent();
+
     if (this.state.selected && this.state.moves.indexOf(i) !== -1) {
       squares[this.state.selected] = "";
       squares[i] = this.state.turn;
@@ -314,15 +275,17 @@ class Game extends React.Component {
       }, )
       
     }
-    else if (this.state.squares[i] == this.state.turn) {
+    else if (this.state.squares[i] === this.state.turn && this.state.validMove)
+    {
       this.setState({
-        selected: i,
+        selected: selected,
         moves : this.availableMoves(squares, this.state.turn, selected)
       });
       
     }
     socket.emit('move', squares);
   }
+
   gameOver()
   {
      var pieces = [];
@@ -336,7 +299,8 @@ class Game extends React.Component {
      this.availableMoves(this.state.squares, turn, pieces);
      
   }
-  availableMoves(squares, turn, selected) {
+  availableMoves(squares, turn, selected) 
+  {
     var moves = [];
     var edge1 = [0, 8, 16, 24, 32, 40, 48, 56];
     var edge2 = [7, 15, 23, 31, 39, 47, 55];
@@ -344,7 +308,8 @@ class Game extends React.Component {
     var object = this;
     selected.forEach(function(checker)
     {
-      if (checker && turn === "red") {
+      if (checker && turn === "red") 
+      {
         if(edge1.indexOf(checker) === -1 && squares[checker - 7] === "" && squares[checker - 9] === "" && edge2.indexOf(checker) === -1)
           {
             moves.push(checker - 9, checker - 7);
@@ -358,7 +323,8 @@ class Game extends React.Component {
             moves.push(checker - 7);
           }
       }
-      else if (checker && turn == "black") {
+      else if (checker && turn == "black") 
+      {
         if(edge1.indexOf(checker) === -1  && squares[checker + 9] === "" && squares[checker + 7] === "" && edge2.indexOf(checker) === -1)
           {
             moves.push(checker + 9, checker + 7);
@@ -443,7 +409,7 @@ class Game extends React.Component {
         <Board brown={this.state.brown} moves={this.state.moves} squares={this.state.squares} selected={this.state.selected} onClick={i => this.handleClick(i)} />
         </div>
         <div className="col">
-        <Chat />
+        {/* <Chat /> */}
         </div> 
       </div>
     );

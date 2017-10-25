@@ -1,8 +1,11 @@
 module.exports = {
-  entry: "./public/javascripts/app.js",
+  entry: {
+    app: "./public/javascripts/app.js",
+    gameSearch: "./public/javascripts/gameSearch.js"
+    },
   output: {
       path: __dirname + "/public",
-      filename: "bundle.js"
+      filename: "[name].js"
   },
   module: {
       rules: [
